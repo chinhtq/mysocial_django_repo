@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+{% block content %}
+<style media="screen">
+.center_position {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<div class="text-center test">
+  <h1 id="signup">Sign up</h1>
+</div>
+<form class="center_position"  method="post" style="width:50%">
+  {% csrf_token %}
+  {% bootstrap_form form %}
+      <input type="submit" name="" value="Accept" class="btn btn-primary btn-lg center_position">
+</form>
+
+{% endblock %}

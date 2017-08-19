@@ -1,0 +1,44 @@
+.jumbotron {
+  background-color: #0C3C26;
+  color: white;
+  height: 100px;
+}
+#info{
+  font-family: 'Roboto', sans-serif;
+  width: 200px;
+  height: 60px;
+  float:left;
+  padding: 8px 16px;
+  font-size: 15px;
+  font-weight: bold;
+  color: #44B78B;
+}
+.navbar-brand {
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    color: #fff !important;
+    font-family: 'Righteous', cursive;
+    font-size: 40px;
+    text-shadow: 2px 1px black;
+    font-weight: bold;
+}
+.navbar li a {
+    color: #fff !important;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+}
+
+.navbar-nav li a:hover, .navbar-nav li.active a {
+    color: #ffb !important;
+    background-color: #0C3C26 !important;
+}
+.ellipsis_text{
+  display: block;
+  display: -webkit-box;
+  max-width: 100%;
+  margin: 0 auto;
+  font-size: 14px;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

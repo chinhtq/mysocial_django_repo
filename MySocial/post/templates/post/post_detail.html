@@ -1,0 +1,42 @@
+{% extends "post/post_base.html" %}
+
+{% block post_content %}
+<div class="container">
+    <h3><a href="{% url 'post:single' pk=post.pk username=post.user.username %}"><strong>{{ post.title }}</strong></a>
+    </h3>
+    <h5><span class="glyphicon glyphicon-time"></span> {{ post.created_at }}</h5>
+    <div>
+        <p>{{ post.message | safe }}</p>
+        <h5>
+            By <span class="username"><a href="{% url 'post:user' username=post.user.username %}"><strong>{{ post.user.username }}</strong> </a></span>
+        </h5>
+    </div>
+    <hr>
+    <h5>Leave a Comment</h5>
+    <form method="POST" action="{% url 'post:single' pk=post.pk username=post.user.username  %}">
+        {% csrf_token %}
+        <div class="input-group" style="width: 30%">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+            <input id="author" type="text" class="form-control" name="author" required placeholder="Author">
+        </div>
+        <br>
+        <div class="form-group" style="width: 60%">
+            <textarea id="message" class="form-control" rows="3" required placeholder="Comment..."
+                      name="message"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-success">Submit</button>
+
+    </form>
+    <br>
+    <p><span class="badge">{{ post.comments.count }}</span> Comments:</p>
+    {% for comment in post.comments.all %}
+    <h4>{{ comment.author }}
+        <small>{{ comment.create_date }}</small>
+    </h4>
+    <p>{{ comment.message|linebreaks }}</p>
+    {% empty %}
+    <p ><strong>No comment here that</strong></p>
+    {% endfor %}
+</div>
+{% endblock %}

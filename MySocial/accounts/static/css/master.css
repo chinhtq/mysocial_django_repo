@@ -1,0 +1,9 @@
+.center_position {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.test {
+  background-color: black;
+}
