@@ -10,7 +10,7 @@ import misaka
 from django.contrib.auth import get_user_model
 
 from groups.models import Group
-
+import re
 User = get_user_model()
 
 
@@ -20,7 +20,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(default=timezone.now())
     message = models.TextField()
     message_html = models.TextField(editable=False)
-    group = models.ForeignKey(Group, related_name="posts", null=True, blank=True)
+    group = models.ForeignKey(Group, related_name="posts", null=True, blank=True,)
 
     def __str__(self):
         return self.title
@@ -34,13 +34,14 @@ class Post(models.Model):
             "post:single",
             kwargs={
                 "username": self.user.username,
-                "pk": self.pk
+                "pk": self.pk,
             }
         )
 
     class Meta:
         ordering = ["created_at"]
         unique_together = ["user", "message"]
+
 
 
 class Comment(models.Model):

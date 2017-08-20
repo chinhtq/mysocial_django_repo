@@ -37,7 +37,8 @@ class Group(models.Model):
     class Meta:
         ordering = ['name']
         permissions = (
-            ('can_post', 'You can post'),
+            ('can_post', ' You can post'),
+            ('can_delete', 'Admin can delete group'),
         )
 
 

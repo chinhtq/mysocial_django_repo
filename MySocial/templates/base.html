@@ -35,9 +35,9 @@
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated  %}
-                <li><a ><span class="glyphicon glyphicon-user"></span> {{ user.username }}</a></li>
-                <li><a href="{% url 'post:user' username=user.username %}">MY POST</a></li>
-                <li><a href="{% url 'post:create_post' %}">NEW POST</a></li>
+                <li><a href=""><span class="glyphicon glyphicon-user"></span> {{ user.username }}</a></li>
+                <li><a href="{% url 'post:post_user' username=user.username %}">MY POST</a></li>
+                <li><a href="{% url 'post:create_post' username=user.username %}">NEW POST</a></li>
                 <li><a href="{% url 'groups:all' %}">GROUP</a></li>
                 <li><a href="{% url 'accounts:logout' %}"><span class="glyphicon glyphicon-log-out"> </span> Logout</a></li>
                 {% else %}

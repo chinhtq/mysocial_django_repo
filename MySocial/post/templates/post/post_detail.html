@@ -8,7 +8,7 @@
     <div>
         <p>{{ post.message | safe }}</p>
         <h5>
-            By <span class="username"><a href="{% url 'post:user' username=post.user.username %}"><strong>{{ post.user.username }}</strong> </a></span>
+            By <span class="username"><a href="{% url 'post:post_user' username=post.user.username %}"><strong>{{ post.user.username }}</strong> </a></span>
         </h5>
     </div>
     <hr>
@@ -36,7 +36,8 @@
     </h4>
     <p>{{ comment.message|linebreaks }}</p>
     {% empty %}
-    <p ><strong>No comment here that</strong></p>
+    <p><strong>No comment here that</strong></p>
     {% endfor %}
+</div>
 </div>
 {% endblock %}

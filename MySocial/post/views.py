@@ -3,25 +3,24 @@ from __future__ import unicode_literals
 
 from django.contrib import messages
 from django.contrib.auth import get_user_model
-
 from django.http import Http404
-from django.http import HttpResponse
 from django.http import HttpResponseForbidden
-from django.shortcuts import  get_object_or_404
+from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from braces.views import SelectRelatedMixin
-from django.urls import reverse
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView
 from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic.edit import FormMixin, DeleteView
 
-from post.form import CommentForm, PostForm
-from post.models import Post
 from groups.models import Group
+from .form import CommentForm
+from .models import Post
+
+from .form import PostForm
 
 User = get_user_model()
 
@@ -52,6 +51,7 @@ class UserPost(ListView):
 class PostDetail(DetailView, FormMixin):
     model = Post
     form_class = CommentForm
+    login_url = '/login/'
 
     def get_context_data(self, **kwargs):
 
@@ -60,6 +60,8 @@ class PostDetail(DetailView, FormMixin):
         return context
 
     def get_success_url(self):
+        print self.object.user.username
+        print self.object.pk
         return reverse('post:single', kwargs={'username': self.object.user.username, 'pk': self.object.pk})
 
     def form_valid(self, form):
@@ -85,37 +87,30 @@ class PostDetail(DetailView, FormMixin):
             return self.form_invalid(form)
 
 
-class CreatePost(LoginRequiredMixin, CreateView):
-    login_url = '/login/'
-    redirect_field_name = "post/post_detail.html"
+class CreatePost(SelectRelatedMixin, CreateView):
+    redirect_field_name = 'post/post_detail.html'
     model = Post
     form_class = PostForm
 
     def form_valid(self, form):
-        print self.request.user.pk
-        group = get_object_or_404(Group, name= form.cleaned_data['group'])
         user = get_object_or_404(User, pk=self.request.user.pk)
-        print  user.has_perm('can_post', group)
-        print user
-        print user.has_perm('can_post', group)
-        if user.has_perm('can_post', group):
+        group = get_object_or_404(Group, name=form.cleaned_data['group'])
+        print user.has_perm('groups.can_post', group)
+        if user.has_perm('groups.can_post', group):
             self.object = form.save(commit=False)
             self.object.user = self.request.user
             self.object.save()
             return super(CreatePost, self).form_valid(form)
-        else:
-            return HttpResponse("Permission to add denied")
+        else : return reverse('post:post_user', kwargs={'username': self.request.user.username})
 
 
-class DeletePost(LoginRequiredMixin, DeleteView, SelectRelatedMixin):
+class DeletePostView(LoginRequiredMixin, SelectRelatedMixin, DeleteView):
     model = Post
     select_related = ("user", "group")
-    success_url = reverse_lazy("post:user")
 
-    def get_queryset(self):
-        queryset = super(DeletePost, self).get_queryset()
-        return queryset.filter(user_id=self.request.user.id)
+    def get_success_url(self):
+        return reverse('post:post_user', kwargs={'username': self.object.user.username})
 
-    def delete(self, *args, **kwargs):
+    def delete(self, request, *args, **kwargs):
         messages.success(self.request, "Post Deleted")
-        return super(DeletePost, self).delete(*args, **kwargs)
+        return super(DeletePostView, self).delete(request, *args, **kwargs)

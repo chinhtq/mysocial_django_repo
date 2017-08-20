@@ -9,6 +9,7 @@ urlpatterns = [
     url(r"^post/in/(?P<slug>[-\w]+)/$", views.SingleGroups.as_view(), name="single"),
     url(r"^join/(?P<slug>[-\w]+)/$", views.JoinGroup.as_view(), name="join"),
     url(r"^leave/(?P<slug>[-\w]+)/$", views.LeaveGroup.as_view(), name="leave"),
+    url(r"^delete/(?P<slug>[-\w]+)/$", views.DeleteGroup.as_view(), name="delete"),
     url(r"^create/$", views.CreateGroup.as_view(), name="create"),
 
 ]
