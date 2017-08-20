@@ -92,8 +92,8 @@ def populate_comment(N=100):
 
 
 if __name__ == "__main__":
-    # populate_user()
-    # populate_group()
+    populate_user()
+    populate_group()
     populate_groupmember()
-    # populate_post()
+    populate_post()
     populate_comment()
